@@ -13,9 +13,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token') || null); // Token'ı localStorage'dan alıyoruz
+  const [token, setToken] = useState<string | null>(null); // Başlangıçta token'ı null olarak ayarlayın
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') { // Tarayıcı ortamında olup olmadığını kontrol edin
+      const storedToken = localStorage.getItem('token');
+      setToken(storedToken);
+      setIsLoading(false); // Token alındıktan sonra loading durumunu false yapıyoruz
+    }
+  }, []); // Bu effect sadece bir kez çalışacak
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -27,7 +35,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.error('Failed to fetch user', error);
         }
       }
-      setIsLoading(false); // Veriler alındıktan sonra loading durumunu false yapıyoruz
     };
 
     fetchCurrentUser();

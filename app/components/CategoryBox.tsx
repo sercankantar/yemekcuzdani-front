@@ -8,40 +8,35 @@ import { IconType } from "react-icons";
 interface CategoryBoxProps {
   icon: string; // icon tipi artık string olacak
   label: string;
+  seo_url: string;
   selected?: boolean;
 }
 
 const CategoryBox: React.FC<CategoryBoxProps> = ({
   icon,
   label,
+  seo_url,
   selected,
 }) => {
   const router = useRouter();
   const params = useSearchParams();
 
   const handleClick = useCallback(() => {
-    let currentQuery = {};
-    
-    if (params) {
-      currentQuery = qs.parse(params.toString())
-    }
+    const apiUrl = `https://api.yemekcuzdani.com/api/v1/recipes/recipe-list/${seo_url}`;
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        console.log('API yanıtı:', data);
+      })
+      .catch(error => {
+        console.error('API isteği sırasında hata oluştu:', error);
+      });
 
-    const updatedQuery: any = {
-      ...currentQuery,
-      category: label
-    }
-
-    if (params?.get('category') === label) {
-      delete updatedQuery.category;
-    }
-
-    const url = qs.stringifyUrl({
-      url: '/',
-      query: updatedQuery
-    }, { skipNull: true });
+    // URL'yi manuel olarak oluşturuyoruz
+    const url = `/categories/${seo_url}`;
 
     router.push(url);
-  }, [label, router, params]);
+  }, [seo_url, router]);
 
   return ( 
     <div
