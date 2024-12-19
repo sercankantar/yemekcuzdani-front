@@ -17,8 +17,6 @@ const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const params = useSearchParams();
   const category = params?.get('seo_url');
-  const pathname = usePathname();
-  const isMainPage = pathname === '/';
 
   useEffect(() => {
     axios.get('https://api.yemekcuzdani.com/api/v1/recipes/category-list')
@@ -31,9 +29,6 @@ const Categories = () => {
       });
   }, []);
 
-  if (!isMainPage) {
-    return null;
-  }
 
   return (
     <Container>

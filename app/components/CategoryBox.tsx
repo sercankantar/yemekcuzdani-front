@@ -22,17 +22,6 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
   const params = useSearchParams();
 
   const handleClick = useCallback(() => {
-    const apiUrl = `https://api.yemekcuzdani.com/api/v1/recipes/recipe-list/${seo_url}`;
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        console.log('API yanıtı:', data);
-      })
-      .catch(error => {
-        console.error('API isteği sırasında hata oluştu:', error);
-      });
-
-    // URL'yi manuel olarak oluşturuyoruz
     const url = `/categories/${seo_url}`;
 
     router.push(url);

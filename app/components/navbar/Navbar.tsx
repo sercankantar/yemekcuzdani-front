@@ -6,13 +6,12 @@ import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
 import Categories from "./Categories";
-import CategoryList from './Categories';
+
 interface NavbarProps {
   currentUser: SafeUser | null; // currentUser prop'unun tipini belirtiyoruz
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
-  
   return ( 
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div className="py-4 border-b-[1px]">
