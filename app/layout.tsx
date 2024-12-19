@@ -10,7 +10,7 @@ import './globals.css'
 import ClientOnly from './components/ClientOnly';
 import { getCurrentUser } from './actions/getCurrentUser';
 import RegisterModal from './components/modals/RegisterModal';
-
+import CategoryList from './components/navbar/Categories';
 
 export const metadata = {
   title: 'Yemek',
@@ -42,8 +42,9 @@ export default async function RootLayout({
             <RegisterModal />
             {/* currentUser'ı Navbar'a prop olarak geçiriyoruz */}
             <Navbar currentUser={currentUser} />
+            <CategoryList/>
           </ClientOnly>
-          <div className="pb-20 pt-28">
+          <div>
             {children}
           </div>
         </AuthProvider>

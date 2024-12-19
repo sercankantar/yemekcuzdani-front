@@ -21,7 +21,6 @@ const Categories = () => {
   const isMainPage = pathname === '/';
 
   useEffect(() => {
-    // Kategorileri API'den çekme
     axios.get('https://api.yemekcuzdani.com/api/v1/recipes/category-list')
       .then((response) => {
         console.log(response.data);
