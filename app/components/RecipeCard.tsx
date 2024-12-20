@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { FaStar } from 'react-icons/fa';
+import { FaClock, FaDollarSign, FaFire, FaMoneyBill, FaRegClock, FaStar, FaUsers } from 'react-icons/fa';
 import useLoginModal from '../hooks/useLoginModal';
 import axios from 'axios';
 import { getCurrentUser } from '../actions/getCurrentUser';
 import useFavorite from "../hooks/useFavorite";
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 interface RecipeCardProps {
   recipe: {
     _id: string;
@@ -24,90 +25,91 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   const [user,setUser] = useState<any>(null);
   const { hasFavorited, toggleFavorite } = useFavorite({ listingId: recipe._id, currentUser: user });
   return (
-    <div className="border rounded-lg shadow-md overflow-hidden max-w-lg mx-auto">
-      <img
-        src={`https://api.yemekcuzdani.com${recipe.images[0]}`}
-        alt={recipe.name}
-        className="w-full h-56 object-cover"
-        onError={(e) => (e.currentTarget.src = '/placeholder-image.jpg')} // Görsel yüklenemezse placeholder kullanılır
-      />
-      <div className="p-6">
-      <h2 className="text-xl font-bold mb-3">
-         <a href={`/tarif/${recipe.seo_url}`} className="hover:underline">
-           {recipe.name}
-         </a>
-       </h2>
-        <p className="text-base text-gray-600 mb-4 line-clamp-3">
+
+    <div className="max-w-sm mx-auto bg-white rounded-xl overflow-hidden shadow-sm">
+      <div className="relative">
+        <img
+          src={`https://api.yemekcuzdani.com${recipe.images[0]}`}
+          alt={recipe.name}
+          className="w-full h-[200px] object-cover"
+        />
+        <button
+          onClick={toggleFavorite}
+          className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
+          aria-label="Add to favorites"
+        >
+              <AiFillHeart
+                size={24}
+                className={
+                  hasFavorited ? 'fill-rose-500' : 'fill-neutral-500/70'
+                }
+              />
+          
+        </button>
+        
+        <div className="absolute bottom-4 left-4 flex items-center space-x-2">
+          <div className="px-2 py-1 bg-white/80 rounded-md text-sm flex items-center">
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            {recipe.comments.length} yorum
+          </div>
+          <div className="px-2 py-1 bg-white/80 rounded-md text-sm flex items-center">
+            <svg
+              className="w-4 h-4 mr-1 text-yellow-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            {recipe.ratingAverage} ({recipe.ratingCount} değerlendirme)
+          </div>
+        </div>
+      </div>
+      <a href={`/tarif/${recipe.seo_url}`} className="p-4">
+        <h3 className="text-lg font-semibold text-pink-500 line-clamp-1">
+          {recipe.name}
+        </h3>
+        <p className="text-base text-gray-600 mb-4 line-clamp-2">
           {recipe.description}
         </p>
-
-        {/* Bilgi Alanı */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4 justify-items-center">
-          {/* Servis Bilgisi */}
-          <div className="flex items-center gap-2 bg-[#64B5FF] rounded-md p-2 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-            </svg>
-            <div className="flex items-baseline gap-1">
-              <span className="font-semibold">Servis:</span>
-              <span className="bg-white text-[#64B5FF] font-bold rounded px-2 py-1">
-                {recipe.servings}
-              </span>
-            </div>
+        <div className="mt-2 mb-2 p-2 flex justify-between items-center">
+          <div className="text-sm text-gray-600 flex items-center">
+          <FaUsers className="mr-1 text-gray-500" size={18} /> {recipe.servings} kişilik
           </div>
-
-          {/* Hazırlık Bilgisi */}
-          <div className="flex items-center gap-2 bg-[#FFEB3B] rounded-md p-2 text-black">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-2c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.14-7-7 3.14-7 7-7zm-1 9h2v2h-2zm0-8h2v6h-2z" />
-            </svg>
-            <div className="flex items-baseline gap-1">
-              <span className="font-semibold">Hazırlık:</span>
-              <span className="bg-white text-black font-bold rounded px-2 py-1">
-                {recipe.preparation_time}dk
-              </span>
-            </div>
+          <div className="text-sm text-gray-600 flex items-center">
+            
+          <FaRegClock className="mr-1 text-gray-500" size={18} /> {recipe.preparation_time}dk Hazırlık
           </div>
-
-          {/* Pişirme Bilgisi */}
-          <div className="flex items-center gap-2 bg-[#4CAF50] rounded-md p-2 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M6 13c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4-4-1.79-4-4zm8 0c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4-4-1.79-4-4zm-8 6c0-2.21 1.79-4 4-4s4 1.79 4 4H6zm8 0c0-2.21 1.79-4 4-4s4 1.79 4 4h-8z" />
-            </svg>
-            <div className="flex items-baseline gap-1">
-              <span className="font-semibold">Pişirme:</span>
-              <span className="bg-white text-[#4CAF50] font-bold rounded px-2 py-1">
-                {recipe.cooking_time}dk
-              </span>
-            </div>
+          <div className="text-sm text-gray-600 flex items-center">
+            <FaFire className="mr-1 text-gray-500" size={18} /> {recipe.cooking_time}dk Pişirme
           </div>
+          
         </div>
+        <button className="flex ml-8 items-center justify-center gap-2 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-24 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+      <FaMoneyBill className="w-5 h-5" />
+      <span className="text-lg">124,69 ₺</span>
+    </button>
+    
+      </a>
 
 
-        {/* Puan Alanı */}
-        {/* Puan Alanı */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center text-yellow-500">
-            {[...Array(5)].map((_, i) => (
-              <FaStar
-                key={i}
-                color={i < Math.round(recipe.ratingAverage) ? "#ffc107" : "#e4e5e9"}
-              />
-            ))}
-            <span className="ml-2 text-sm text-gray-600">({recipe.ratingCount} oy)</span>
-          </div>
-          {recipe.comments.length === 0 ? (
-           <span className="text-sm">Henüz hiç yorum atılmamış, ilk yorumlayan sen ol...</span>
-         ) : (
-           <span className="ml-2 text-sm text-gray-600">({recipe.comments.length} yorum)</span>
-         )}
-        </div>
-        {hasFavorited ? (
-       <button onClick={toggleFavorite} className="bg-gray-400 text-white px-4 py-2 rounded-md">Favorilerden Çıkar</button>
-     ) : (
-       <button onClick={toggleFavorite} className="bg-[#64B5FF] text-white px-4 py-2 rounded-md">Favorilere Ekle</button>
-     )}
-      </div>
     </div>
   );
 };
