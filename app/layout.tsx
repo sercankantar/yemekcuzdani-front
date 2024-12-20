@@ -12,6 +12,7 @@ import { getCurrentUser } from './actions/getCurrentUser';
 import RegisterModal from './components/modals/RegisterModal';
 import CategoryList from './components/navbar/Categories';
 import RecipeModal from './components/modals/recipeModal';
+import SettingsModal from './components/modals/SettingsModal';
 
 export const metadata = {
   title: 'Yemek',
@@ -42,6 +43,7 @@ export default async function RootLayout({
             <LoginModal />
             <RegisterModal />
             <RecipeModal />
+            <SettingsModal />
             <Navbar currentUser={currentUser} />
             <CategoryList/>
           </ClientOnly>

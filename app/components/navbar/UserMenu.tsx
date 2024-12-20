@@ -8,10 +8,11 @@ import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useRentModal from "@/app/hooks/useRentModal";
 import { SafeUser } from "@/app/types";
-
+import SettingsModal from "@/app/components/modals/SettingsModal";
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
 import { useAuth } from "@/app/context/AuthContext"; // useAuth'ı import ettik
+import useSettingsModal from "@/app/hooks/useSettingsModal";
 
 export const UserMenu: React.FC = () => {
   const { currentUser, setCurrentUser } = useAuth(); // currentUser'ı AuthContext'ten alıyoruz
@@ -20,6 +21,7 @@ export const UserMenu: React.FC = () => {
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const rentModal = useRentModal();
+  const settingsModal = useSettingsModal();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -49,7 +51,7 @@ export const UserMenu: React.FC = () => {
     ? [
         { label: "Tariflerim", action: () => router.push("/tariflerim") },
         { label: "Favorilerim", action: () => router.push("/favorilerim") },
-        { label: "Ayarlar", action: () => router.push("/ayarlar") },
+        { label: "Ayarlar", action: () => settingsModal.onOpen() },
         { label: "Yemek Tarifi Ekle", action: rentModal.onOpen },
         { label: "Çıkış Yap", action: handleLogout }, // Çıkış yapma fonksiyonu buraya eklendi
       ]
