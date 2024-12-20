@@ -2,50 +2,63 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getCurrentUser } from '@/app/lib/auth'; // getCurrentUser fonksiyonunu buradan import ettik
+import refreshAccessToken from '../lib/refresh';
 
 interface AuthContextType {
   currentUser: any; // currentUser tipi
   setCurrentUser: (user: any) => void;
   token: string | null;
   setToken: (token: string) => void;
+  refreshToken: string | null; // Refresh token ekledik
+ setRefreshToken: (token: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState<string | null>(null); // Başlangıçta token'ı null olarak ayarlayın
+  const [token, setToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null); // Refresh token state'i ekledik
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') { // Tarayıcı ortamında olup olmadığını kontrol edin
+   useEffect(() => {
+    if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem('token');
+      const storedRefreshToken = localStorage.getItem('refreshToken'); // Refresh token'ı localStorage'dan alıyoruz
       setToken(storedToken);
-      setIsLoading(false); // Token alındıktan sonra loading durumunu false yapıyoruz
+      setRefreshToken(storedRefreshToken); // Refresh token'ı state'e set ediyoruz
+      setIsLoading(false);
     }
-  }, []); // Bu effect sadece bir kez çalışacak
-
-  useEffect(() => {
+  }, []);
+   useEffect(() => {
     const fetchCurrentUser = async () => {
       if (token) {
         try {
-          const user = await getCurrentUser(token); // getCurrentUser fonksiyonunu burada çağırıyoruz
-          setCurrentUser(user); // Kullanıcıyı set ediyoruz
+          const user = await getCurrentUser(token);
+          setCurrentUser(user);
         } catch (error) {
           console.error('Failed to fetch user', error);
+          // Eğer token geçersizse, refresh token ile yeni bir token almayı deneyebiliriz
+          if (refreshToken) {
+            try {
+              const newToken = await refreshAccessToken(refreshToken); // Yeni bir access token al
+              setToken(newToken);
+              localStorage.setItem('token', newToken); // Yeni token'ı localStorage'a kaydet
+            } catch (refreshError) {
+              console.error('Failed to refresh token', refreshError);
+            }
+          }
         }
       }
     };
-
-    fetchCurrentUser();
-  }, [token]); // Token değiştiğinde useEffect çalışacak
+     fetchCurrentUser();
+  }, [token, refreshToken]);  // Token değiştiğinde useEffect çalışacak
 
   if (isLoading) {
     return null; // Loading state can be shown here
   }
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser, token, setToken }}>
+    <AuthContext.Provider value={{ currentUser, setCurrentUser, token, setToken, refreshToken, setRefreshToken }}>
       {children}
     </AuthContext.Provider>
   );

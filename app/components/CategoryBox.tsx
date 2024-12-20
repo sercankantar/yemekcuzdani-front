@@ -22,7 +22,7 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
   const params = useSearchParams();
 
   const handleClick = useCallback(() => {
-    const url = `/categories/${seo_url}`;
+    const url = `/kategoriler/${seo_url}`;
 
     router.push(url);
   }, [seo_url, router]);
