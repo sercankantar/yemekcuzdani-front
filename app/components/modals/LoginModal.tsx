@@ -17,7 +17,7 @@ import Button from "../Button";
 
 const LoginModal = () => {
   const router = useRouter();
-  const { setToken, setCurrentUser } = useAuthStore(); // Zustand store'dan setToken ve setCurrentUser fonksiyonları alındı
+  const { setToken, setCurrentUser, setRefreshToken } = useAuthStore(); // Zustand store'dan setToken ve setCurrentUser fonksiyonları alındı
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
@@ -42,13 +42,14 @@ const LoginModal = () => {
         password: data.password,
       });
 
-      const { token, user } = response.data;
+      const { token, user, refreshToken } = response.data;
 
       // Token ve kullanıcı bilgisini kaydet
       localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
       setToken(token); // Zustand store'a token kaydet
       setCurrentUser(user); // Kullanıcı bilgisini store'a kaydet
-
+      setRefreshToken(refreshToken); // Refresh token'ı store'a kaydet
       toast.success("Giriş başarılı!");
       loginModal.onClose(); // Modalı kapat
       window.location.reload();

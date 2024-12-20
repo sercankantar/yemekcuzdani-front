@@ -11,6 +11,7 @@ import ClientOnly from './components/ClientOnly';
 import { getCurrentUser } from './actions/getCurrentUser';
 import RegisterModal from './components/modals/RegisterModal';
 import CategoryList from './components/navbar/Categories';
+import RecipeModal from './components/modals/recipeModal';
 
 export const metadata = {
   title: 'Yemek',
@@ -40,7 +41,7 @@ export default async function RootLayout({
             <ToasterProvider />
             <LoginModal />
             <RegisterModal />
-            {/* currentUser'ı Navbar'a prop olarak geçiriyoruz */}
+            <RecipeModal />
             <Navbar currentUser={currentUser} />
             <CategoryList/>
           </ClientOnly>

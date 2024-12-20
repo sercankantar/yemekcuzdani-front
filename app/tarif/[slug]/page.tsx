@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import axios from 'axios';
 import useLoginModal from '@/app/hooks/useLoginModal';
 import { getCurrentUser } from '@/app/actions/getCurrentUser';
+import { SafeUser } from '@/app/types';
 // Recipe türünü tanımlayın
 interface Ingredient {
     Ingredient_Description: string;
@@ -60,11 +61,13 @@ function RecipePage() {
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const [comments, setComments] = useState<Comment[]>([]);
     const [pricing, setPricing] = useState<Pricing | null>(null);
-    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const [user, setUser] = useState<SafeUser | null>(null);
     const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-        getCurrentUser(storedToken?.toString()).then(data => setCurrentUserId(data._id));
-    }
+    useEffect(() => {
+        if (storedToken) {
+            getCurrentUser(storedToken?.toString()).then(data => setUser(data));
+        }
+    }, [storedToken]);
     const [newComment, setNewComment] = useState('');
     const loginModal = useLoginModal();
     const [userRating, setUserRating] = useState<number | null>(null);
@@ -89,6 +92,7 @@ function RecipePage() {
                     },
                 }
             );
+            getCurrentUser(storedToken?.toString()).then(data => setUser(data));
             alert("Puanınız kaydedildi!");
         } catch (error) {
             console.error('Puan gönderilirken hata oluştu:', error);
@@ -165,26 +169,29 @@ function RecipePage() {
             <img src={`https://api.yemekcuzdani.com${recipe.images[0]}`} alt={recipe.name} className="w-full h-56 object-cover" onError={(e) => (e.currentTarget.src = '/placeholder-image.jpg')} />
             <h1 className="text-3xl font-bold mb-4">{recipe.name}</h1>
             <p className="text-gray-700 mb-6">{recipe.description}</p>
-            <div className="mb-6">
-                <h2 className="text-xl font-semibold">Puan: {recipe.ratingAverage ? recipe.ratingAverage.toFixed(1) : 'Henüz puanlanmamış'}</h2>
-                <div className="flex items-center mt-2">
-                    {[1, 2, 3, 4, 5].map((value) => (
-                        <button
-                            key={value}
-                            onClick={() => setUserRating(value)}
-                            className={`px-2 py-1 border ${userRating === value ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'}`}
-                        >
-                            {value}
-                        </button>
-                    ))}
-                </div>
-                <button
-                    onClick={handleRatingSubmit}
-                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-                >
-                    Puanla
-                </button>
-            </div>
+            <h2 className="text-xl font-semibold">Puan: {recipe.ratingAverage ? recipe.ratingAverage.toFixed(1) : 'Henüz puanlanmamış'}</h2>
+            {user&& !user.ratedRecipes.includes(recipe._id) && (
+               <div className="mb-6">
+                   
+                   <div className="flex items-center mt-2">
+                       {[1, 2, 3, 4, 5].map((value) => (
+                           <button
+                               key={value}
+                               onClick={() => setUserRating(value)}
+                               className={`px-2 py-1 border ${userRating === value ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'}`}
+                           >
+                               {value}
+                           </button>
+                       ))}
+                   </div>
+                   <button
+                       onClick={handleRatingSubmit}
+                       className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                   >
+                       Puanla
+                   </button>
+               </div>
+           )}
             <div className="mb-6">
                 <h2 className="text-2xl font-semibold mb-2">Malzemeler</h2>
                 <ul className="list-disc list-inside space-y-2">
@@ -276,7 +283,7 @@ function RecipePage() {
                         <div className="flex items-center mb-2">
                             <img src={`https://api.yemekcuzdani.com${comment.user.profileImageId}`} alt="Profile" className="w-8 h-8 rounded-full mr-2" />
                             <span className="font-semibold">{comment.user.fullName || comment.user.email}</span>
-                            {comment.user._id === currentUserId && (
+                            {user && comment.user._id === user._id && (
                                 <button
                                     onClick={() => handleDeleteComment(comment._id)}
                                     className="ml-auto text-red-500 hover:text-red-700"
