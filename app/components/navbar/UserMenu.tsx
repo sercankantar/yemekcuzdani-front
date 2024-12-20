@@ -13,7 +13,7 @@ import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
 import { useAuth } from "@/app/context/AuthContext"; // useAuth'ı import ettik
 
-const UserMenu: React.FC = () => {
+export const UserMenu: React.FC = () => {
   const { currentUser, setCurrentUser } = useAuth(); // currentUser'ı AuthContext'ten alıyoruz
   const router = useRouter();
 
