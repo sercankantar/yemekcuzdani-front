@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-
+import useLoginModal from '../hooks/useLoginModal';
+import axios from 'axios';
+import { getCurrentUser } from '../actions/getCurrentUser';
+import useFavorite from "../hooks/useFavorite";
 interface RecipeCardProps {
   recipe: {
+    _id: string;
     seo_url: any;
     name: string;
     description: string;
@@ -17,6 +21,8 @@ interface RecipeCardProps {
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+  const [user,setUser] = useState<any>(null);
+  const { hasFavorited, toggleFavorite } = useFavorite({ listingId: recipe._id, currentUser: user });
   return (
     <div className="border rounded-lg shadow-md overflow-hidden max-w-lg mx-auto">
       <img
@@ -96,6 +102,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
            <span className="ml-2 text-sm text-gray-600">({recipe.comments.length} yorum)</span>
          )}
         </div>
+        {hasFavorited ? (
+       <button onClick={toggleFavorite} className="bg-gray-400 text-white px-4 py-2 rounded-md">Favorilerden Çıkar</button>
+     ) : (
+       <button onClick={toggleFavorite} className="bg-[#64B5FF] text-white px-4 py-2 rounded-md">Favorilere Ekle</button>
+     )}
       </div>
     </div>
   );

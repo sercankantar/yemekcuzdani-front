@@ -5,4 +5,5 @@ export interface SafeUser {
     image?: string;
     createdAt: string;
     updatedAt: string;
+    favoriteRecipes: string[];
   }

@@ -39,6 +39,11 @@ interface Recipe {
     recipe_instructions: string[];
     comments: string[];
     images: string[];
+    ratingAverage: number;
+    calories: number;
+    proteins: number;
+    fats: number;
+    carbohydrates: number;
 }
 interface Comment {
     _id: string;
@@ -57,11 +62,38 @@ function RecipePage() {
     const [pricing, setPricing] = useState<Pricing | null>(null);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const storedToken = localStorage.getItem('token');
-    if(storedToken){
+    if (storedToken) {
         getCurrentUser(storedToken?.toString()).then(data => setCurrentUserId(data._id));
     }
     const [newComment, setNewComment] = useState('');
     const loginModal = useLoginModal();
+    const [userRating, setUserRating] = useState<number | null>(null);
+    const handleRatingSubmit = async () => {
+        if (!storedToken) {
+            loginModal.onOpen();
+            return;
+        }
+        if (userRating === null) {
+            alert("Lütfen bir puan seçin.");
+            return;
+        }
+        try {
+            await axios.post(
+                `https://api.yemekcuzdani.com/api/v1/recipes/add-rating/${recipe?._id}`,
+                {
+                    rating: userRating
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${storedToken}`,
+                    },
+                }
+            );
+            alert("Puanınız kaydedildi!");
+        } catch (error) {
+            console.error('Puan gönderilirken hata oluştu:', error);
+        }
+    };
     const handleDeleteComment = async (commentId: string) => {
         if (!storedToken) {
             loginModal.onOpen();
@@ -133,7 +165,26 @@ function RecipePage() {
             <img src={`https://api.yemekcuzdani.com${recipe.images[0]}`} alt={recipe.name} className="w-full h-56 object-cover" onError={(e) => (e.currentTarget.src = '/placeholder-image.jpg')} />
             <h1 className="text-3xl font-bold mb-4">{recipe.name}</h1>
             <p className="text-gray-700 mb-6">{recipe.description}</p>
-
+            <div className="mb-6">
+                <h2 className="text-xl font-semibold">Puan: {recipe.ratingAverage ? recipe.ratingAverage.toFixed(1) : 'Henüz puanlanmamış'}</h2>
+                <div className="flex items-center mt-2">
+                    {[1, 2, 3, 4, 5].map((value) => (
+                        <button
+                            key={value}
+                            onClick={() => setUserRating(value)}
+                            className={`px-2 py-1 border ${userRating === value ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'}`}
+                        >
+                            {value}
+                        </button>
+                    ))}
+                </div>
+                <button
+                    onClick={handleRatingSubmit}
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                    Puanla
+                </button>
+            </div>
             <div className="mb-6">
                 <h2 className="text-2xl font-semibold mb-2">Malzemeler</h2>
                 <ul className="list-disc list-inside space-y-2">
@@ -155,7 +206,14 @@ function RecipePage() {
                 </ol>
             </div>
             <div className="mb-6">
-
+                <h2 className="text-2xl font-semibold mb-2">Kalori</h2>
+                <p className="text-gray-600">{recipe.calories} kcal</p>
+                <h2 className="text-2xl font-semibold mb-2">Protein</h2>
+                <p className="text-gray-600">{recipe.proteins} g</p>
+                <h2 className="text-2xl font-semibold mb-2">Yağ</h2>
+                <p className="text-gray-600">{recipe.fats} g</p>
+                <h2 className="text-2xl font-semibold mb-2">Karbonhidrat</h2>
+                <p className="text-gray-600">{recipe.carbohydrates} g</p>
             </div>
             <div className="mb-6">
                 <h2 className="text-2xl font-semibold mb-2">Fiyatlandırma</h2>
@@ -213,24 +271,24 @@ function RecipePage() {
                 <span className="ml-2 text-sm text-gray-600">({recipe.comments.length} yorum)</span>
             )}
             <ul className="space-y-4">
-               {comments.map((comment) => (
-                   <li key={comment._id} className="bg-gray-100 p-4 rounded-lg shadow">
-                       <div className="flex items-center mb-2">
-                           <img src={`https://api.yemekcuzdani.com${comment.user.profileImageId}`} alt="Profile" className="w-8 h-8 rounded-full mr-2" />
-                           <span className="font-semibold">{comment.user.fullName || comment.user.email}</span>
-                           {comment.user._id === currentUserId && (
-                               <button 
-                                   onClick={() => handleDeleteComment(comment._id)} 
-                                   className="ml-auto text-red-500 hover:text-red-700"
-                               >
-                                   Sil
-                               </button>
-                           )}
-                       </div>
-                       <p className="text-gray-700">{comment.content}</p>
-                   </li>
-               ))}
-           </ul>
+                {comments.map((comment) => (
+                    <li key={comment._id} className="bg-gray-100 p-4 rounded-lg shadow">
+                        <div className="flex items-center mb-2">
+                            <img src={`https://api.yemekcuzdani.com${comment.user.profileImageId}`} alt="Profile" className="w-8 h-8 rounded-full mr-2" />
+                            <span className="font-semibold">{comment.user.fullName || comment.user.email}</span>
+                            {comment.user._id === currentUserId && (
+                                <button
+                                    onClick={() => handleDeleteComment(comment._id)}
+                                    className="ml-auto text-red-500 hover:text-red-700"
+                                >
+                                    Sil
+                                </button>
+                            )}
+                        </div>
+                        <p className="text-gray-700">{comment.content}</p>
+                    </li>
+                ))}
+            </ul>
             <form onSubmit={handleCommentSubmit} className="mt-4">
                 <textarea
                     value={newComment}
