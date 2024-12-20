@@ -13,7 +13,7 @@ import RegisterModal from './components/modals/RegisterModal';
 import CategoryList from './components/navbar/Categories';
 import RecipeModal from './components/modals/recipeModal';
 import SettingsModal from './components/modals/SettingsModal';
-
+import SearchModal from './components/modals/searchModal';
 export const metadata = {
   title: 'Yemek',
   description: 'Yemek',
@@ -43,11 +43,12 @@ export default async function RootLayout({
             <LoginModal />
             <RegisterModal />
             <RecipeModal />
+            <SearchModal />
             <SettingsModal />
             <Navbar currentUser={currentUser} />
             <CategoryList/>
           </ClientOnly>
-          <div className="pb-20 pt-[70px]">
+          <div className="pb-20 pt-28">
             {children}
           </div>
         </AuthProvider>
