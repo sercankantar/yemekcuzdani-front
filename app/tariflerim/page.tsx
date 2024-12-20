@@ -57,7 +57,7 @@ const MyRecipesPage = () => {
     return (
         <div className="p-4">
             {recipes.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-6">
                     {recipes.map((recipe: any, index: number) => (
                         <RecipeCard key={`${recipe.id}-${index}`} recipe={recipe} />
                     ))}

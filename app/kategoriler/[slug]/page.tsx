@@ -6,6 +6,7 @@ import axios from 'axios';
 import RecipeCard from '@/app/components/RecipeCard';
 import FilterComponent from '@/app/components/filters/filter'; 
 import qs from 'query-string';
+import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 const CategoryPage = () => {
   const { slug } = useParams();
   const params = useSearchParams();
@@ -60,7 +61,7 @@ const CategoryPage = () => {
         fetchRecipes(filters);
       }} /> {/* FilterComponent'i burada kullanın */}
       {recipes.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-6">
           {recipes.map((recipe: any, index: number) => (
             <RecipeCard key={`${recipe.id}-${index}`} recipe={recipe} />
           ))}
@@ -71,21 +72,21 @@ const CategoryPage = () => {
 
       {/* Pagination kontrolü */}
       {pagination.totalPages > 0 && (
-        <div className="flex justify-center mt-4">
+        <div className="flex items-center justify-center gap-2 mt-32">
           <button
             disabled={pagination.page === 1}
             onClick={() => handlePageChange(pagination.page - 1)}
-            className="mr-2 px-4 py-2 bg-gray-300 rounded"
+            className="mr-2 px-4 py-2 bg-pink-100 rounded"
           >
-            Önceki
+            <BiChevronLeft className="h-4 w-4" />
           </button>
-          <span className="px-4">{pagination.page} / {pagination.totalPages}</span>
+          <span className="flex items-center justify-center min-w-[2rem] h-9 px-3 border border-primary rounded-md text-gray-500">{pagination.page} / {pagination.totalPages}</span>
           <button
             disabled={pagination.page === pagination.totalPages}
             onClick={() => handlePageChange(pagination.page + 1)}
-            className="ml-2 px-4 py-2 bg-gray-300 rounded"
+            className="ml-2 px-4 py-2 bg-pink-100 rounded"
           >
-            Sonraki
+            <BiChevronRight className="h-4 w-4" />
           </button>
         </div>
       )}
