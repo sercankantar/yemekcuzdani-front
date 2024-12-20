@@ -23,7 +23,7 @@ const MyFavoritesPage = () => {
             loginModal.onOpen();
             return;
         }
-        const apiUrl = `https://api.yemekcuzdani.com/api/v1/recipes/my-favorites`;
+        const apiUrl = `https://api.yemekcuzdani.com/api/v1/recipes/my-favorite-recipes`;
         try {
             
             const response = await axios.get(apiUrl, {
