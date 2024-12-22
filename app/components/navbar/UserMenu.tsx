@@ -75,7 +75,7 @@ export const UserMenu: React.FC = () => {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src={currentUser?.image} />
+            <Avatar src={"https://api.yemekcuzdani.com"+currentUser?.profileImageId} />
           </div>
         </div>
       </div>
