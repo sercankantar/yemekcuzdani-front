@@ -133,7 +133,7 @@ const RentModal = () => {
     axios.post('https://api.yemekcuzdani.com/api/v1/recipes/create-recipe', data, {
       headers: {
         'Content-Type': 'application/json',
-
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     })
     .then(() => {

@@ -13,6 +13,7 @@ interface RecipeCardProps {
     description: string;
     images: string[];
     servings: number;
+    totalPrice: number;
     preparation_time: number;
     cooking_time: number;
     ratingAverage: number;
@@ -105,7 +106,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         <div className="flex items-center justify-center">
           <button className="flex items-center justify-center gap-2 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-24 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
             <FaMoneyBill className="w-5 h-5" />
-            <span className="text-lg">124,69 ₺</span>
+            <span className="text-lg">{recipe.totalPrice.toFixed(2)} ₺</span>
           </button>
         </div>
     
