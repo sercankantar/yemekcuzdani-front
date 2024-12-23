@@ -1,6 +1,6 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { FaFilter } from 'react-icons/fa';
+import { FaBars, FaFilter } from 'react-icons/fa';
 
 const FilterComponent = ({ onFilter }: { onFilter: (filters: any) => void }) => {
   const [filters, setFilters] = useState({
@@ -47,24 +47,41 @@ const FilterComponent = ({ onFilter }: { onFilter: (filters: any) => void }) => 
   };
 
   return (
-    <div className="bg-gray-100 p-2 rounded-lg shadow-md pt-4 border-2">
+    <div className="bg-gray-50 p-2 rounded-lg  pt-3 border-1 mb-12">
       <button
         onClick={() => setIsFilterVisible(!isFilterVisible)}
         className="w-full px-4 py-2 mb-4 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 md:hidden flex items-center justify-center"
       >
-        <FaFilter size={20} className='mr-2' /> Filtrele
+        <FaBars size={20} className='mr-2' /> Filtrele
       </button>
       {(isFilterVisible || window.innerWidth >= 768) && (
+        
         <form 
           onSubmit={handleSubmit} 
           className="flex flex-wrap items-center justify-between gap-2 md:gap-4">
+            <div className='hidden md:block '>
+              <FaBars className='w-8 h-8 text-pink-600' />
+            </div>
           <input
             type="text"
             name="name"
             placeholder="Tarif Adı"
             value={filters.name}
             onChange={handleChange}
-            className="w-full md:w-auto px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="
+          p-2
+          w-full
+          sm:w-auto
+          font-light 
+          bg-white 
+          border-2
+          rounded-md
+          outline-none
+          transition
+          disabled:opacity-70
+          disabled:cursor-not-allowed
+          border-rose-100
+          focus:border-rose-400"
           />
           <input
             type="number"
@@ -72,7 +89,19 @@ const FilterComponent = ({ onFilter }: { onFilter: (filters: any) => void }) => 
             placeholder="Min Porsiyon"
             value={filters.min_servings}
             onChange={handleChange}
-            className="w-full md:w-auto px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="p-2
+            w-full
+          sm:w-auto
+          font-light 
+          bg-white 
+          border-2
+          rounded-md
+          outline-none
+          transition
+          disabled:opacity-70
+          disabled:cursor-not-allowed
+          border-rose-100
+          focus:border-rose-400"
           />
           <input
             type="number"
@@ -80,7 +109,19 @@ const FilterComponent = ({ onFilter }: { onFilter: (filters: any) => void }) => 
             placeholder="Max Porsiyon"
             value={filters.max_servings}
             onChange={handleChange}
-            className="w-full md:w-auto px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="p-2
+          font-light
+          w-full
+          sm:w-auto 
+          bg-white 
+          border-2
+          rounded-md
+          outline-none
+          transition
+          disabled:opacity-70
+          disabled:cursor-not-allowed
+          border-rose-100
+          focus:border-rose-400"
           />
           <input
             type="number"
@@ -88,7 +129,19 @@ const FilterComponent = ({ onFilter }: { onFilter: (filters: any) => void }) => 
             placeholder="Min Hazırlık Süresi"
             value={filters.min_preparation_time}
             onChange={handleChange}
-            className="w-full md:w-auto px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="p-2
+          font-light
+          w-full
+          sm:w-auto 
+          bg-white 
+          border-2
+          rounded-md
+          outline-none
+          transition
+          disabled:opacity-70
+          disabled:cursor-not-allowed
+          border-rose-100
+          focus:border-rose-400"
           />
           <input
             type="number"
@@ -96,13 +149,37 @@ const FilterComponent = ({ onFilter }: { onFilter: (filters: any) => void }) => 
             placeholder="Max Hazırlık Süresi"
             value={filters.max_preparation_time}
             onChange={handleChange}
-            className="w-full md:w-auto px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="p-2
+          font-light
+          w-full
+          sm:w-auto 
+          bg-white 
+          border-2
+          rounded-md
+          outline-none
+          transition
+          disabled:opacity-70
+          disabled:cursor-not-allowed
+          border-rose-100
+          focus:border-rose-400"
           />
           <select
             name="sort_by"
             value={filters.sort_by}
             onChange={handleChange}
-            className="w-full md:w-auto px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="p-2
+          font-light
+          w-full
+          sm:w-auto 
+          bg-white 
+          border-2
+          rounded-md
+          outline-none
+          transition
+          disabled:opacity-70
+          disabled:cursor-not-allowed
+          border-rose-100
+          focus:border-rose-400"
           >
             <option value="">Sıralama Kriteri</option>
             <option value="name">Ad</option>
@@ -113,7 +190,19 @@ const FilterComponent = ({ onFilter }: { onFilter: (filters: any) => void }) => 
             name="order"
             value={filters.order}
             onChange={handleChange}
-            className="w-full md:w-auto px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="p-2
+          font-light
+          w-full
+          sm:w-auto 
+          bg-white 
+          border-2
+          rounded-md
+          outline-none
+          transition
+          disabled:opacity-70
+          disabled:cursor-not-allowed
+          border-rose-100
+          focus:border-rose-400"
           >
             <option value="">Sıralama Yönü</option>
             <option value="asc">Artan</option>
@@ -121,7 +210,7 @@ const FilterComponent = ({ onFilter }: { onFilter: (filters: any) => void }) => 
           </select>
           <button
             type="submit"
-            className="w-full md:w-auto px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full md:w-auto px-4 py-2 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-400"
           >
             Filtreyi Uygula
           </button>

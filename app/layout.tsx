@@ -48,7 +48,7 @@ export default async function RootLayout({
             <Navbar currentUser={currentUser} />
             <CategoryList/>
           </ClientOnly>
-          <div className="pb-20 pt-28">
+          <div className="pb-20 pt-24">
             {children}
           </div>
         </AuthProvider>
