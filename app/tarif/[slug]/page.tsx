@@ -13,6 +13,7 @@ import { FaBreadSlice, FaCheck, FaChevronCircleDown, FaChevronCircleUp, FaCloudM
 import { TbBrand4Chan } from 'react-icons/tb';
 import Container from '@/app/components/Container';
 import toast from 'react-hot-toast';
+import Loader from '@/app/components/Loader';
 // Recipe türünü tanımlayın
 
 interface Ingredient {
@@ -185,7 +186,7 @@ function RecipePage() {
 
     }, [slug]);
     if (!recipe) {
-        return <div className="flex justify-center items-center h-screen">Yükleniyor...</div>;
+        return <Loader/>;
     }
     return (
         <Container>

@@ -35,7 +35,8 @@ const Search = () => {
       >
         <div 
           className="
-            text-sm 
+            md:text-sm
+            text-[11px]
             font-semibold 
             px-6
           "

@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import RecipeCard from '@/app/components/RecipeCard';
 import useLoginModal from '../hooks/useLoginModal';
+import Loader from '../components/Loader';
+import EmptyState from '@/app/components/EmptyState'; // EmptyState bileşenini import ettik
+
 const MyFavoritesPage = () => {
     const { slug } = useParams();
     const params = useSearchParams();
@@ -16,6 +19,7 @@ const MyFavoritesPage = () => {
         totalItems: 0,
         totalPages: 0,
     });
+    const [loading, setLoading] = useState(true); // Yükleme durumu için state
 
     const fetchRecipes = async (filters: any) => {
         const storedToken = localStorage.getItem('token');
@@ -25,7 +29,7 @@ const MyFavoritesPage = () => {
         }
         const apiUrl = `https://api.yemekcuzdani.com/api/v1/recipes/my-favorite-recipes`;
         try {
-            
+            setLoading(true); // Yükleme başladığında setLoading(true) yapıyoruz
             const response = await axios.get(apiUrl, {
                 headers: {
                     Authorization: `Bearer ${storedToken}`,
@@ -39,8 +43,9 @@ const MyFavoritesPage = () => {
             });
         } catch (error) {
             console.error('API isteği sırasında hata oluştu:', error);
+        } finally {
+            setLoading(false); // Yükleme tamamlandığında setLoading(false) yapıyoruz
         }
-
     };
 
     useEffect(() => {
@@ -54,15 +59,20 @@ const MyFavoritesPage = () => {
 
     return (
         <div className="p-4">
-            {recipes.length > 0 ? (
+            {/* Yükleme sırasında Loader göster, veriler geldiğinde ise EmptyState veya ürünleri göster */}
+            {loading ? (
+                <Loader />
+            ) : recipes.length === 0 ? (
+                <EmptyState title='Favorin Yok !' subtitle='Hemen bir tarifi favori ekleyebilirsin.' showReset={true} />
+            ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {recipes.map((recipe: any, index: number) => (
                         <RecipeCard key={`${recipe.id}-${index}`} recipe={recipe} />
                     ))}
                 </div>
-            ) : (
-                <div>Yükleniyor...</div>
             )}
+
+            {/* Pagination kontrolü */}
             {pagination.totalPages > 0 && (
                 <div className="flex justify-center mt-4">
                     <button

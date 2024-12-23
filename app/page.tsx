@@ -2,6 +2,7 @@
 import RecipeCard from './components/RecipeCard'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Loader from './components/Loader';
 
 export default function Home() {
   const [lessCaloriesRecipes, setLessCaloriesRecipes] = useState([]);
@@ -22,7 +23,7 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <div>Yükleniyor...</div>;
+    return <Loader/>;
   }
 
   return (

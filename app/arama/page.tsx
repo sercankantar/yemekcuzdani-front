@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
@@ -7,6 +7,9 @@ import RecipeCard from '@/app/components/RecipeCard';
 import FilterSearchComponent from '@/app/components/filters/filterSearch'; 
 import qs from 'query-string';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
+import Loader from '@/app/components/Loader';
+import EmptyState from '@/app/components/EmptyState'; // EmptyState bileşenini import ettik
+
 const SearchPage = () => {
   const { slug } = useParams();
   const params = useSearchParams();
@@ -17,6 +20,7 @@ const SearchPage = () => {
     totalItems: 0,
     totalPages: 0,
   });
+  const [loading, setLoading] = useState(true); // Yükleme durumu için state
 
   const fetchRecipes = async (filters: any) => {
     if (params) {
@@ -32,6 +36,7 @@ const SearchPage = () => {
       }).toString();
       const apiUrl = `https://api.yemekcuzdani.com/api/v1/recipes/search-recipe?${queryParams}`;
       try {
+        setLoading(true); // Yükleme başladığında setLoading(true) yapıyoruz
         const response = await axios.get(apiUrl);
         setRecipes(response.data.data);
         setPagination({
@@ -41,6 +46,8 @@ const SearchPage = () => {
         });
       } catch (error) {
         console.error('API isteği sırasında hata oluştu:', error);
+      } finally {
+        setLoading(false); // Yükleme tamamlandığında setLoading(false) yapıyoruz
       }
     }
   };
@@ -59,15 +66,19 @@ const SearchPage = () => {
       <FilterSearchComponent onFilter={(filters: any) => {
         setPagination((prevState) => ({ ...prevState, page: 1 })); // Sayfa numarasını 1'e sıfırla
         fetchRecipes(filters);
-      }} /> {/* FilterComponent'i burada kullanın */}
-      {recipes.length > 0 ? (
+      }} />
+      
+      {/* Yükleme sırasında Loader göster, veriler geldiğinde ise EmptyState veya ürünleri göster */}
+      {loading ? (
+        <Loader />
+      ) : recipes.length === 0 ? (
+        <EmptyState title='Aradığınız tarifi bulamadık' subtitle='Farklı bir şekilde yazmayı deneyin ya da farklı tarif arayın.' showReset={true} />
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-6">
           {recipes.map((recipe: any, index: number) => (
             <RecipeCard key={`${recipe.id}-${index}`} recipe={recipe} />
           ))}
         </div>
-      ) : (
-        <div>Yükleniyor...</div>
       )}
 
       {/* Pagination kontrolü */}
@@ -80,7 +91,9 @@ const SearchPage = () => {
           >
             <BiChevronLeft className="h-4 w-4" />
           </button>
-          <span className="flex items-center justify-center min-w-[2rem] h-9 px-3 border border-primary rounded-md text-gray-500">{pagination.page} / {pagination.totalPages}</span>
+          <span className="flex items-center justify-center min-w-[2rem] h-9 px-3 border border-primary rounded-md text-gray-500">
+            {pagination.page} / {pagination.totalPages}
+          </span>
           <button
             disabled={pagination.page === pagination.totalPages}
             onClick={() => handlePageChange(pagination.page + 1)}

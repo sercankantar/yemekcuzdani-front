@@ -14,7 +14,7 @@ const Logo = () => {
     className="block md:hidden cursor-pointer" 
     src="/images/mobil-logo.png" 
     height="50" // Daha küçük boyut
-    width="70"  // Daha küçük boyut
+    width="65"  // Daha küçük boyut
     alt="Logo" 
   />
   {/* Masaüstü için görünür logo */}
