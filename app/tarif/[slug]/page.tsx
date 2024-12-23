@@ -83,9 +83,7 @@ function RecipePage() {
     const loginModal = useLoginModal();
     const [userRating, setUserRating] = useState<number | null>(null);
     const [showMore, setShowMore] = useState(false);
-    //const { hasFavorited, toggleFavorite } = useFavorite({ listingId: recipe?._id | "", currentUser: user });
-    
-
+    const { hasFavorited, toggleFavorite } = useFavorite({ listingId: recipe?._id || "", currentUser: user });
     const handleShowMore = () => {
       setShowMore(true);
     };
@@ -174,6 +172,7 @@ function RecipePage() {
                             Authorization: `Bearer ${storedToken}`,
                         },
                     });
+                    
                     setRecipe(response.data.Recipe);
                     setComments(response.data.Comments);
                     setPricing(response.data.Pricing);
@@ -201,14 +200,14 @@ function RecipePage() {
                     {/* Fav */}
                     <div className='absolute top-5 right-5'>
                         <button
-                                  onClick={()=>{}}
+                                  onClick={toggleFavorite}
                                   className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
                                   aria-label="Add to favorites"
                                 >
                                       <AiFillHeart
                                         size={30}
                                         className={
-                                          'fill-neutral-500/70'
+                                          hasFavorited ? 'fill-rose-500' : 'fill-neutral-500/70'
                                         }
                                       />
                                   
