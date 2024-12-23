@@ -1,11 +1,8 @@
 import { Nunito } from 'next/font/google'
-
 import Navbar from '@/app/components/navbar/Navbar';
 import LoginModal from '@/app/components/modals/LoginModal';
-
 import ToasterProvider from '@/app/providers/ToasterProvider';
 import { AuthProvider } from '@/app/context/AuthContext';
-
 import './globals.css'
 import ClientOnly from './components/ClientOnly';
 import { getCurrentUser } from './actions/getCurrentUser';
@@ -14,9 +11,12 @@ import CategoryList from './components/navbar/Categories';
 import RecipeModal from './components/modals/recipeModal';
 import SettingsModal from './components/modals/SettingsModal';
 import SearchModal from './components/modals/searchModal';
+import Head from 'next/head';
+
 export const metadata = {
-  title: 'Yemek',
-  description: 'Yemek',
+  title: 'Yemek Cüzdanı',
+  description: 'Yemek Cüzdanı ile artık tariflerin fiyatlarını öğrenebilirsiniz.',
+  icons: {icon: '/favicon.ico'}
 }
 
 const font = Nunito({ 
@@ -36,6 +36,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <Head>
+        <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+      </Head>
       <body className={font.className}>
         <AuthProvider>
           <ClientOnly>

@@ -83,7 +83,7 @@ const FilterSearchComponent = ({ onFilter }: { onFilter: (filters: any) => void 
             onChange={handleChange}
             className="p-2
           w-full
-          sm:w-auto
+          sm:w-[150px]
           font-light 
           bg-white 
           border-2
@@ -110,7 +110,7 @@ const FilterSearchComponent = ({ onFilter }: { onFilter: (filters: any) => void 
             onChange={handleChange}
             className="p-2
           w-full
-          sm:w-auto
+          sm:w-[150px]
           font-light 
           bg-white 
           border-2
@@ -130,7 +130,7 @@ const FilterSearchComponent = ({ onFilter }: { onFilter: (filters: any) => void 
             onChange={handleChange}
             className="p-2
           w-full
-          sm:w-auto
+          sm:w-[150px]
           font-light 
           bg-white 
           border-2
@@ -150,7 +150,7 @@ const FilterSearchComponent = ({ onFilter }: { onFilter: (filters: any) => void 
             onChange={handleChange}
             className="p-2
           w-full
-          sm:w-auto
+          sm:w-[170px]
           font-light 
           bg-white 
           border-2
@@ -170,7 +170,7 @@ const FilterSearchComponent = ({ onFilter }: { onFilter: (filters: any) => void 
             onChange={handleChange}
             className="p-2
           w-full
-          sm:w-auto
+          sm:w-[170px]
           font-light 
           bg-white 
           border-2
@@ -188,7 +188,7 @@ const FilterSearchComponent = ({ onFilter }: { onFilter: (filters: any) => void 
             onChange={handleChange}
             className="p-2
           w-full
-          sm:w-auto
+          sm:w-[150px]
           font-light 
           bg-white 
           border-2
@@ -211,7 +211,7 @@ const FilterSearchComponent = ({ onFilter }: { onFilter: (filters: any) => void 
             onChange={handleChange}
             className="p-2
           w-full
-          sm:w-auto
+          sm:w-[150px]
           font-light 
           bg-white 
           border-2
@@ -231,7 +231,7 @@ const FilterSearchComponent = ({ onFilter }: { onFilter: (filters: any) => void 
             type="submit"
             className="w-full md:w-auto px-4 py-2 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-400"
           >
-            Filtreyi Uygula
+            Ara
           </button>
         </form>
       )}
