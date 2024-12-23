@@ -8,16 +8,15 @@ import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useRentModal from "@/app/hooks/useRentModal";
 import { SafeUser } from "@/app/types";
-import useSettingsModal from "@/app/hooks/useSettingsModal";
+import SettingsModal from "@/app/components/modals/SettingsModal";
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
+import { useAuth } from "@/app/context/AuthContext"; // useAuth'ı import ettik
+import useSettingsModal from "@/app/hooks/useSettingsModal";
 
-interface UserMenuProps {
-  currentUser: SafeUser | null;
-  onLogout?: () => void; // Eğer logout işlemini dışarıda yönetmek isterseniz
-}
 
-export const UserMenu: React.FC<UserMenuProps> = ({ currentUser, onLogout }) => {
+export const UserMenu: React.FC = () => {
+  const { currentUser, setCurrentUser } = useAuth(); // currentUser'ı AuthContext'ten alıyoruz
   const router = useRouter();
 
   const loginModal = useLoginModal();
@@ -39,13 +38,14 @@ export const UserMenu: React.FC<UserMenuProps> = ({ currentUser, onLogout }) => 
   }, [loginModal, rentModal, currentUser]);
 
   const handleLogout = () => {
-    if (onLogout) {
-      onLogout(); // Eğer dışarıdan bir onLogout fonksiyonu verilmişse çağır
-    } else {
-      // Varsayılan logout işlemleri
-      localStorage.removeItem("token");
-      window.location.reload();
-    }
+    // Token'ı localStorage'den siliyoruz
+    localStorage.removeItem("token");
+
+    // currentUser'ı sıfırlıyoruz (eğer AuthContext'te setCurrentUser varsa)
+    setCurrentUser(null);
+
+    // Sayfayı yeniliyoruz
+    window.location.reload();
   };
 
   const menuItems = currentUser
@@ -54,7 +54,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ currentUser, onLogout }) => 
         { label: "Favorilerim", action: () => router.push("/favorilerim") },
         { label: "Ayarlar", action: () => settingsModal.onOpen() },
         { label: "Yemek Tarifi Ekle", action: rentModal.onOpen },
-        { label: "Çıkış Yap", action: handleLogout },
+        { label: "Çıkış Yap", action: handleLogout }, // Çıkış yapma fonksiyonu buraya eklendi
       ]
     : [
         { label: "Giriş Yap", action: loginModal.onOpen },
@@ -76,13 +76,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ currentUser, onLogout }) => 
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar
-              src={
-                currentUser?.profileImageId
-                  ? `https://api.yemekcuzdani.com${currentUser.profileImageId}`
-                  : "https://api.yemekcuzdani.com/uploads/profiles/default.png"
-              }
-            />
+          <Avatar src={currentUser?.profileImageId ? `https://api.yemekcuzdani.com${currentUser.profileImageId}` : 'https://api.yemekcuzdani.com/uploads/profiles/default.png'} />
           </div>
         </div>
       </div>
