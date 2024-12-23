@@ -31,3 +31,9 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+export const getAuthStore = () => {
+  const { token, refreshToken, email, currentUser, setToken, setAuth, setCurrentUser, setRefreshToken, clearAuth } =
+    useAuthStore.getState();
+  return { token, refreshToken, email, currentUser, setToken, setAuth, setCurrentUser, setRefreshToken, clearAuth };
+};
+

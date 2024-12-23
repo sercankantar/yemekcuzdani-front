@@ -110,7 +110,7 @@ const LoginModal = () => {
     <div className="flex flex-col gap-4 mt-3">
       <hr />
       <div className="text-neutral-500 text-center mt-4 font-light">
-        <p><span className="text-pink-600">Yemekcüzdanı</span>'nda yeni misin?  
+        <p><span className="text-pink-600">Yemekcüzdanı</span>&apos;nda yeni misin?  
           <span 
             onClick={onToggle} 
             className="text-neutral-800 cursor-pointer hover:underline"
