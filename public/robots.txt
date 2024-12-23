@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://yemekcuzdani.com
+
+# Sitemaps
+Sitemap: https://yemekcuzdani.com/sitemap.xml

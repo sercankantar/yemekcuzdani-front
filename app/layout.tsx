@@ -16,11 +16,11 @@ import Head from 'next/head';
 export const metadata = {
   title: 'Yemek Cüzdanı',
   description: 'Yemek Cüzdanı ile artık tariflerin fiyatlarını öğrenebilirsiniz.',
-  icons: {icon: '/favicon.ico'}
+  icons: { icon: '/favicon.ico' }
 }
 
-const font = Nunito({ 
-  subsets: ['latin'], 
+const font = Nunito({
+  subsets: ['latin'],
 });
 
 export default async function RootLayout({
@@ -28,8 +28,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const token = typeof window === 'undefined' 
-    ? null 
+  const token = typeof window === 'undefined'
+    ? null
     : localStorage.getItem("token");
 
   const currentUser = token ? await getCurrentUser(token) : null;
@@ -39,7 +39,10 @@ export default async function RootLayout({
       <Head>
         <link rel="icon" type="image/x-icon" href="./favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Yemek Cüzdanı ile artık tariflerin fiyatlarını öğrenebilirsiniz." />
+        <meta name="description" content="Yemek tariflerinizin maliyetlerini kolayca öğrenin. Yemek Cüzdanı ile yemek fiyatlarını hesaplayabilir, bütçe dostu tarifler oluşturabilirsiniz." />
+        <meta name="keywords" content="tarif fiyatı, yemek maliyeti, yemek fiyatı hesaplama, tarif maliyeti öğrenme, bütçe dostu tarifler, yemek tarif fiyatları, yemek hesaplama aracı" />
+        <meta name="author" content="Yemek Cüzdanı" />
+        <title>Yemek Cüzdanı | Hesaplı Yemeğin Adresi</title>
       </Head>
       <body className={font.className}>
         <AuthProvider>
@@ -51,7 +54,7 @@ export default async function RootLayout({
             <SearchModal />
             <SettingsModal />
             <Navbar currentUser={currentUser} />
-            <CategoryList/>
+            <CategoryList />
           </ClientOnly>
           <div className="pb-20 pt-24">
             {children}
@@ -59,5 +62,6 @@ export default async function RootLayout({
         </AuthProvider>
       </body>
     </html>
+
   )
 }
