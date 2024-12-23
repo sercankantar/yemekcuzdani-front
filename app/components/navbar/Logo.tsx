@@ -7,14 +7,26 @@ const Logo = () => {
   const router = useRouter();
 
   return ( 
-    <Image
-      onClick={() => router.push('/')}
-      className="hidden md:block cursor-pointer" 
-      src="/images/logo.png" 
-      height="100" 
-      width="150" 
-      alt="Logo" 
-    />
+    <div>
+  {/* Mobil için görünür logo */}
+  <Image
+    onClick={() => router.push('/')}
+    className="block md:hidden cursor-pointer" 
+    src="/images/mobil-logo.png" 
+    height="50" // Daha küçük boyut
+    width="70"  // Daha küçük boyut
+    alt="Logo" 
+  />
+  {/* Masaüstü için görünür logo */}
+  <Image
+    onClick={() => router.push('/')}
+    className="hidden md:block cursor-pointer" 
+    src="/images/logo.png" 
+    height="100" 
+    width="150" 
+    alt="Logo" 
+  />
+</div>
    );
 }
  

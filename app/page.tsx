@@ -28,8 +28,8 @@ export default function Home() {
   return (
     <div>
       <div className="inset-2 bottom-0 rounded-4xl ring-1 ring-inset ring-black/5 bg-white p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="font-bold text-2xl text-black">En Düşük Kalorili Tarifler</h1>
+        <div className="flex items-center justify-start mb-8 pl-4">
+          <h1 className="flex flex-row font-bold text-2xl text-red-500"><img className='w-8 h-8 object-cover mr-2' src="/images/diet.png" alt="" />Az Kalori, Çok Lezzet !</h1>
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {lessCaloriesRecipes.map((recipe: any, index: number) => (
@@ -38,8 +38,8 @@ export default function Home() {
         </div>
       </div>
       <div className="inset-2 bottom-0 rounded-4xl ring-1 ring-inset ring-black/5 bg-white p-4 flex flex-col mt-10">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="font-bold text-2xl text-black">En Düşük Hazırlık Süreli Tarifler</h1>
+      <div className="flex items-center justify-start mb-8 pl-4">
+          <h1 className="flex flex-row font-bold text-2xl text-blue-500"><img className='w-8 h-8 object-cover mr-2' src="/images/clock.png" alt="" />Dakikalarla Yarışan Lezzetler !</h1>
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {lessPreparationTime.map((recipe: any, index: number) => (
@@ -48,8 +48,8 @@ export default function Home() {
         </div>
       </div>
       <div className="inset-2 bottom-0 rounded-4xl ring-1 ring-inset ring-black/5 bg-white p-4 flex flex-col mt-10">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="font-bold text-2xl text-black">En Düşük Fiyatlı Tarifler</h1>
+      <div className="flex items-center justify-start mb-8 pl-4">
+          <h1 className="flex flex-row font-bold text-2xl text-green-500"><img className='w-8 h-8 object-cover mr-2' src="/images/offer.png" alt="" />Cebin Rahat, Sofran Şahane !</h1>
         </div>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {lessPrice.map((recipe: any, index: number) => (
