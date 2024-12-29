@@ -27,7 +27,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   const { hasFavorited, toggleFavorite } = useFavorite({ listingId: recipe._id, currentUser: user });
   return (
 
-    <div className="max-w-sm mx-auto bg-white rounded-xl overflow-hidden shadow-sm">
+    <div className="max-w-md mx-auto bg-white border-1 shadow-md rounded-xl overflow-hidden">
       <div className="relative">
         <img
           src={`https://api.yemekcuzdani.com${recipe.images[0]}`}
@@ -65,14 +65,14 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           </div>
         </div>
       </div>
-      <a href={`/tarif/${recipe.seo_url}`} className="p-4">
-        <h3 className="text-lg font-extrabold text-pink-500 line-clamp-1">
+      <a href={`/tarif/${recipe.seo_url}`} className="p-4 flex flex-col items-center">
+        <h3 className="text-lg font-extrabold text-pink-500 line-clamp-1 text-center">
           {recipe.name}
         </h3>
-        <p className="text-base text-gray-600 mb-4 line-clamp-2">
+        <p className="text-base text-gray-600 mb-4 line-clamp-2 text-center">
           {recipe.description}
         </p>
-        <div className="mt-2 mb-2 p-2 flex justify-between items-center">
+        <div className="mb-2 p-2 flex flex-wrap justify-center items-center gap-4">
           <div className="text-sm text-gray-600 flex items-center">
           <FaUsers className="mr-1 text-blue-500" size={18} /> {recipe.servings} kişilik
           </div>
@@ -86,15 +86,13 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           
         </div>
         <div className="flex items-center justify-center">
-          <button className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-600 text-white font-bold py-2 px-32 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+          <button className="flex items-center justify-center gap-2 bg-[#EC48A6] hover:bg-[#EC48A6] text-white font-bold py-2 px-4 md:px-8 lg:px-16 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 w-full md:w-auto">
             <FaMoneyBill className="w-5 h-5" />
             <span className="text-lg">{recipe.totalPrice.toFixed(1)} ₺</span>
           </button>
         </div>
     
       </a>
-
-
     </div>
   );
 };

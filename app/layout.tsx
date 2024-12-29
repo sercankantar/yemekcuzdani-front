@@ -11,14 +11,44 @@ import CategoryList from './components/navbar/Categories';
 import RecipeModal from './components/modals/recipeModal';
 import SettingsModal from './components/modals/SettingsModal';
 import SearchModal from './components/modals/searchModal';
-import Head from 'next/head';
+import { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Yemek Cüzdanı',
-  description: 'Yemek Cüzdanı ile artık tariflerin fiyatlarını öğrenebilirsiniz.',
-  icons: { icon: '/favicon.ico' }
+export const metadata: Metadata = {
+  title: 'Yemek Cüzdanı | Hesaplı Yemeğin Adresi',
+  description: 'Yemek Cüzdanı, hesaplı yemeklerin adresi. Tarifleri görüntüleyebilir, fiyatlarını öğrenebilir, maliyetlerini hesaplayabilirsiniz.',
+  keywords: 'tarif fiyatı, yemek maliyeti, yemek fiyatı hesaplama, tarif maliyeti öğrenme, bütçe dostu tarifler, yemek tarif fiyatları, yemek hesaplama aracı',
+  authors: [{ name: 'Yemek Cüzdanı', url: 'https://yemekcuzdani.com' }],
+  openGraph: {
+    title: 'Yemek Cüzdanı | Hesaplı Yemeğin Adresi',
+    description: 'Yemek Cüzdanı, hesaplı yemeklerin adresi. Tarifleri görüntüleyebilir, fiyatlarını öğrenebilir, maliyetlerini hesaplayabilirsiniz.',
+    url: 'https://yemekcuzdani.com',
+    type: 'website',
+    images: [
+      {
+        url: './images/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Yemek Cüzdanı',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Yemek Cüzdanı | Hesaplı Yemeğin Adresi',
+    description: 'Yemek Cüzdanı, hesaplı yemeklerin adresi. Tarifleri görüntüleyebilir, fiyatlarını öğrenebilir, maliyetlerini hesaplayabilirsiniz.',
+    images: [
+      {
+        url: './images/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Yemek Cüzdanı',
+      },
+    ],
+  },
+  alternates: {
+    canonical: 'https://yemekcuzdani.com',
+  },
 }
-
 const font = Nunito({
   subsets: ['latin'],
 });
@@ -35,15 +65,7 @@ export default async function RootLayout({
   const currentUser = token ? await getCurrentUser(token) : null;
 
   return (
-    <html lang="en">
-      <Head>
-        <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Yemek tariflerinizin maliyetlerini kolayca öğrenin. Yemek Cüzdanı ile yemek fiyatlarını hesaplayabilir, bütçe dostu tarifler oluşturabilirsiniz." />
-        <meta name="keywords" content="tarif fiyatı, yemek maliyeti, yemek fiyatı hesaplama, tarif maliyeti öğrenme, bütçe dostu tarifler, yemek tarif fiyatları, yemek hesaplama aracı" />
-        <meta name="author" content="Yemek Cüzdanı" />
-        <title>Yemek Cüzdanı | Hesaplı Yemeğin Adresi</title>
-      </Head>
+    <html lang="tr">
       <body className={font.className}>
         <AuthProvider>
           <ClientOnly>
